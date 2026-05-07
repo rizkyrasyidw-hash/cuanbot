@@ -14,7 +14,8 @@ PORT = int(os.getenv("PORT", 8000))
 
 client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
 
-mcp = FastMCP("Telegram News MCP")
+# Create FastMCP and configure host/port via constructor (FastMCP.run doesn't accept host/port)
+mcp = FastMCP("Telegram News MCP", host="0.0.0.0", port=PORT)
 
 @mcp.tool()
 async def get_latest_news(limit: int = 10) -> str:
@@ -32,4 +33,5 @@ async def get_latest_news(limit: int = 10) -> str:
     return "\n\n".join(result) if result else "Tidak ada pesan ditemukan."
 
 if __name__ == "__main__":
-    mcp.run(transport="streamable-http", host="0.0.0.0", port=PORT)
+    # start the server using StreamableHTTP transport; host/port are configured on the FastMCP instance
+    mcp.run(transport="streamable-http")
