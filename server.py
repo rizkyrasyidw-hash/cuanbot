@@ -41,9 +41,15 @@ async def get_latest_news(limit: int = 10) -> str:
         return "\n\n".join(result) if result else "Tidak ada berita."
     except Exception as e:
         logger.error(f"Error: {e}")
-        return f"Error mengambil berita: {str(e)}"
+        return f"Error: {str(e)}"
     finally:
         await client.disconnect()
 
 if __name__ == "__main__":
-    mcp.run(transport="streamable-http", host="0.0.0.0", port=PORT)
+    import uvicorn
+    uvicorn.run(
+        mcp.sse_app(), 
+        host="0.0.0.0", 
+        port=PORT,
+        log_level="info"
+    )
