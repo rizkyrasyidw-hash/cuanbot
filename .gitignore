@@ -1,1 +1,4 @@
 /.env
+/.session_string
+/.venv
+/__pycache__/
